@@ -13,6 +13,9 @@ fi
 echo "Installing"
 cwd=`pwd`
 
+bin_check_ping=$cwd/bin/check_ping
+
+echo $bin_check_ping
 
 
 exit 0
