@@ -5,7 +5,10 @@ use FileHandle;
 open (CFG, "cat /etc/check_mk/mrpe-check_ping.cfg |") or die "Can't open config file\n";
 
 while ( <CFG> ) {
-	print "Line: $_ \n";
+	chomp;
+	s/^\s+|\s+$//g;
+	$name ~= m/^[a-zA-Z0-9_-]*/;
+	print "Line $name: $_ \n";
 }
 
 
