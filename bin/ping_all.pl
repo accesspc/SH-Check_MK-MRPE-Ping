@@ -2,7 +2,7 @@
 use threads;
 use FileHandle;
 
-open (CFG, 'cat /etc/check_mk/mrpe-check_ping.cfg') or die "Can't open config file\n";
+open (CFG, "cat /etc/check_mk/mrpe-check_ping.cfg |") or die "Can't open config file\n";
 
 while ( <CFG> ) {
 	print "Line: $_ \n";
