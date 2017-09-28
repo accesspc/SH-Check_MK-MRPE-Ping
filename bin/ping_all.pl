@@ -7,7 +7,7 @@ open (CFG, "cat /etc/check_mk/mrpe-check_ping.cfg |") or die "Can't open config 
 while ( <CFG> ) {
 	chomp;
 	s/^\s+|\s+$//g;
-	$name ~= m/^[a-zA-Z0-9_-]*/;
+	$name =~ m/^[a-zA-Z0-9_-]*/;
 	print "Line $name: $_ \n";
 }
 
