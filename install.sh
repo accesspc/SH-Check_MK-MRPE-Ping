@@ -1,5 +1,19 @@
 #!/bin/bash
 
+if [ ! -e /etc/check_mk/mrpe.cfg ] ; then
+	echo "Configuration file /etc/check_mk/mrpe.cfg does not exist"
+	exit 1
+fi
+
+if [ ! -e /usr/lib/nagios/plugins/check_ping ] ; then
+	echo "nagios-plugins package is not installed"
+	exit 1
+fi
+
+echo "Installing"
+cwd=`pwd`
+
+
 
 exit 0
 
