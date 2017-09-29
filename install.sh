@@ -15,10 +15,10 @@ fi
 
 mcp=$(pwd)/bin/mrpe-check_ping
 
-echo "# " > /etc/cron.d/mrpe_check_ping
-echo "# cron.d/mrpe_check_ping -- schedules threaded check_mk check_ping every minute" >> /etc/cron.d/mrpe_check_ping
-echo "# " >> /etc/cron.d/mrpe_check_ping
-echo "* *	* * *	root	if [ -x ${mcp} ]; then ${mcp}; fi"
+echo "# 
+# cron.d/mrpe_check_ping -- schedules threaded check_mk check_ping every minute
+# 
+* *	* * *	root	if [ -x ${mcp} ]; then ${mcp}; fi" > /etc/cron.d/mrpe_check_ping
 
 echo "Finished"
 
