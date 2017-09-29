@@ -15,7 +15,7 @@ echo "Installing"
 cwd=`pwd`
 
 cron_mcp=/etc/cron.d/mrpe_check_ping
-bin_cpt=$(pwd)/bin/bin/check_ping_threaded
+bin_cpt=$(pwd)/bin/check_ping_threaded
 plugin_mcp=$(pwd)/plugin/mrpe_check_ping
 
 if [ -x ${cron_mcp} ] ; then
