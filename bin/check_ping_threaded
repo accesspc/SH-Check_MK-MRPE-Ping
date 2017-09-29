@@ -28,13 +28,13 @@ while ( <CFG> ) {
 	$thread[$counter] = threads->new(\&ping_thread, $ping_command, $counter, $name);
 	
 	# Debug
-	#print "Started '$name' with comamnd: '$ping_command'\n";
+	print "Started '$name' with comamnd: '$ping_command'\n";
 	
 	$counter++;
 }
 
 # Debug
-#print "All threads started\n";
+print "All threads started\n";
 
 # Waiting for all threads to finish
 $run = 1;
@@ -61,19 +61,25 @@ sub ping_thread {
 	$| = 1;
 	select($oldh);
 
-	#$ping_count = 0;
 	while ( <$handle> ) {
 		chomp;
 		s/^\s+|\s+$//;
+		
+		@strs = split /\s+/, $_;
+		$status = 0;
+		if (@strs[1] eq "WARNING") { $status = 1; }
+		elsif (@strs[1] eq "CRITICAL") { $status = 2; }
+		elsif (@strs[1] eq "UNKNOWN") { $status = 3; }
+		
 		print TMP "<<<mrpe>>>\n";
-		print TMP "(check_ping) $name $? $_\n";
-		#$ping_count++;
+		print TMP "(check_ping) $name $status $_\n";
+		print STDOUT "(check_ping) $status $_\n";
 	}
 	close(PING);
 }
 
 # Debug
-#print "Finished\n";
+print "Finished\n";
 
 close (CFG);
 close (TMP);

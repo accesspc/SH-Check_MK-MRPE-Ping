@@ -29,10 +29,11 @@ fi
 echo "# 
 # cron.d/mrpe_check_ping -- schedules threaded check_mk check_ping every minute
 # 
-* *	* * *	root	if [ -x ${bin_cpt} ]; then ${bin_cpt}; fi" > ${cron_mcp}
+* *	* * *	root	if [ -x ${bin_cpt} ]; then ${bin_cpt}; fi" > ${cron_mcp} >> /var/log/mrpe_check_ping.log
 cat ${cron_mcp}
 
-install -m 0755 plugin/mrpe_check_ping /usr/lib/check_mk_agent/plugins/mrpe_check_ping
+install -v -m 0644 logrotate.d/mrpe_check_ping /etc/logrotate.d/mrpe_check_ping
+install -v -m 0755 plugin/mrpe_check_ping /usr/lib/check_mk_agent/plugins/mrpe_check_ping
 
 echo "Finished"
 echo

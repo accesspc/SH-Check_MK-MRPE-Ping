@@ -1,0 +1,9 @@
+/var/log/mrpe_check_ping.log {
+	daily
+	rotate 7
+	delaycompress
+	compress
+	notifempty
+	missingok
+}
+
