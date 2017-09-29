@@ -4,13 +4,16 @@ use FileHandle;
 use File::Copy;
 
 $cfg_config = "/etc/check_mk/mrpe_check_ping.cfg";
-$cfg_tmp = "/tmp/mrpe_check_ping.tmp";
-$cfg_output = "/tmp/mrpe_check_ping.out";
+#$cfg_tmp = "/tmp/mrpe_check_ping.tmp";
+#$cfg_output = "/tmp/mrpe_check_ping.out";
+if (! -x "/tmp/mrpe") {
+	mkdir("/tmp/mrpe");
+}
 
 # Open config file 
 open (CFG, "cat $cfg_config |") or die "Can't open config '$cfg_config' file\n";
 # Open output temp file
-open (TMP, ">$cfg_tmp") or die "Can't open output temp '$cfg_tmp' file\n"; 
+#open (TMP, ">$cfg_tmp") or die "Can't open output temp '$cfg_tmp' file\n"; 
 
 # Loop through config file's lines
 $counter = 1;
@@ -28,7 +31,7 @@ while ( <CFG> ) {
 	$thread[$counter] = threads->new(\&ping_thread, $ping_command, $counter, $name);
 	
 	# Debug
-	print "Started '$name' with comamnd: '$ping_command'\n";
+	print "Started '$name'\n";
 	
 	$counter++;
 }
@@ -56,6 +59,7 @@ sub ping_thread {
 	$name = @data[2];
 	
 	# Start check_ping"
+	open(TMP, ">/tmp/mrpe/$name.tmp") or die "Can't open output temp '/tmp/mrpe/$name.tmp' file\n"; 
 	open($handle, "$ping_command 2>&1 |") or die "Can't start ping process!\n";
 	$oldh = select($handle);
 	$| = 1;
@@ -76,13 +80,15 @@ sub ping_thread {
 		print STDOUT "(check_ping) $status $_\n";
 	}
 	close(PING);
+	close(TMP);
+	copy("/tmp/mrpe/$name.tmp", "/tmp/mrpe/$name.out") or die "Can't copy tmp to out file\n";
 }
 
 # Debug
 print "Finished\n";
 
 close (CFG);
-close (TMP);
+#close (TMP);
 
-move($cfg_tmp, $cfg_output) or die "Can't move tmp to output file\n";
+#copy($cfg_tmp, $cfg_output) or die "Can't move tmp to output file\n";
 
