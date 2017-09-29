@@ -3,9 +3,9 @@ use threads;
 use FileHandle;
 use File::Copy;
 
-$cfg_config = "/etc/check_mk/mrpe-check_ping.cfg";
-$cfg_tmp = "/tmp/mrpe-check_ping.tmp";
-$cfg_output = "/tmp/mrpe-check_ping.out";
+$cfg_config = "/etc/check_mk/mrpe_check_ping.cfg";
+$cfg_tmp = "/tmp/mrpe_check_ping.tmp";
+$cfg_output = "/tmp/mrpe_check_ping.out";
 
 # Open config file 
 open (CFG, "cat $cfg_config |") or die "Can't open config '$cfg_config' file\n";
@@ -27,12 +27,14 @@ while ( <CFG> ) {
 	# Create a new thread
 	$thread[$counter] = threads->new(\&ping_thread, $ping_command, $counter, $name);
 	
-	print "Started '$name' with comamnd: '$ping_command'\n";
+	# Debug
+	#print "Started '$name' with comamnd: '$ping_command'\n";
 	
 	$counter++;
 }
 
-print "All threads started\n";
+# Debug
+#print "All threads started\n";
 
 # Waiting for all threads to finish
 $run = 1;
@@ -69,7 +71,9 @@ sub ping_thread {
 	}
 	close(PING);
 }
-print "Finished\n";
+
+# Debug
+#print "Finished\n";
 
 close (CFG);
 close (TMP);

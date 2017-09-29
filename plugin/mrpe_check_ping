@@ -1,0 +1,5 @@
+#!/bin/bash
+
+if [ -x /tmp/mrpe_check_ping.out ] ; then
+	cat /tmp/mrpe_check_ping.out
+fi

@@ -1,24 +1,34 @@
 #!/bin/bash
 
 if [ ! -x /usr/lib/nagios/plugins/check_ping ] ; then
-	echo "nagios-plugins package is not installed"
+	echo "nagios-plugins is not installed"
+	exit 1
+fi
+
+if [ ! -x /usr/lib/check_mk_agent/plugins ] ; then
+	echo "check_mk_agent is not installed"
 	exit 1
 fi
 
 echo "Installing"
 cwd=`pwd`
 
-if [ -x /etc/cron.d/mrpe_check_ping ] ; then
-	echo "Cron '/etc/cron.d/mrpe_check_ping' already exists"
-	echo "Overwritting..."
+cron_mcp=/etc/cron.d/mrpe_check_ping
+bin_cpt=$(pwd)/bin/bin/check_ping_threaded
+plugin_mcp=$(pwd)/plugin/mrpe_check_ping
+
+if [ -x ${cron_mcp} ] ; then
+	echo "Cron '${cron_mcp}' already exists. Overwritting..."
 fi
 
-mcp=$(pwd)/bin/mrpe-check_ping
+
 
 echo "# 
 # cron.d/mrpe_check_ping -- schedules threaded check_mk check_ping every minute
 # 
-* *	* * *	root	if [ -x ${mcp} ]; then ${mcp}; fi" > /etc/cron.d/mrpe_check_ping
+* *	* * *	root	if [ -x ${bin_cpt} ]; then ${bin_cpt}; fi" > ${/etc/cron.d/mrpe_check_ping}
+
+install -m 0755 plugin/mrpe_check_ping /usr/lib/check_mk_agent/plugins/mrpe_check_ping
 
 echo "Finished"
 
