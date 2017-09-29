@@ -1,0 +1,78 @@
+#!/usr/bin/perl
+use threads;
+use FileHandle;
+use File::Copy;
+
+$cfg_config = "/etc/check_mk/mrpe-check_ping.cfg";
+$cfg_tmp = "/tmp/mrpe-check_ping.tmp";
+$cfg_output = "/tmp/mrpe-check_ping.out";
+
+# Open config file 
+open (CFG, "cat $cfg_config |") or die "Can't open config '$cfg_config' file\n";
+# Open output temp file
+open (TMP, ">$cfg_tmp") or die "Can't open output temp '$cfg_tmp' file\n"; 
+
+# Loop through config file's lines
+$counter = 1;
+while ( <CFG> ) {
+	# Clear unneaded spaces
+	chomp;
+	s/^\s+|\s+$//g;
+	
+	# Extract name from line
+	@parts = split /\s+/, $_;
+	$name = shift @parts;
+	$ping_command = join ' ', @parts;
+	
+	# Create a new thread
+	$thread[$counter] = threads->new(\&ping_thread, $ping_command, $counter, $name);
+	
+	print "Started '$name' with comamnd: '$ping_command'\n";
+	
+	$counter++;
+}
+
+print "All threads started\n";
+
+# Waiting for all threads to finish
+$run = 1;
+while($run) {
+	@running = threads->list(threads::running);
+	$nrunning = @running;
+	if ($nrunning < 1) {
+		$run = 0;
+	}
+	sleep(1);
+}
+
+# Thread subroutine
+sub ping_thread {
+	# Collect arguments
+	my @data = @_;
+	$ping_command = @data[0];
+	$handle = PING."@data[1]";
+	$name = @data[2];
+	
+	# Start check_ping"
+	open($handle, "$ping_command 2>&1 |") or die "Can't start ping process!\n";
+	$oldh = select($handle);
+	$| = 1;
+	select($oldh);
+
+	#$ping_count = 0;
+	while ( <$handle> ) {
+		chomp;
+		s/^\s+|\s+$//;
+		print TMP "<<<mrpe>>>\n";
+		print TMP "(check_ping) $name $? $_\n";
+		#$ping_count++;
+	}
+	close(PING);
+}
+print "Finished\n";
+
+close (CFG);
+close (TMP);
+
+move($cfg_tmp, $cfg_output) or die "Can't move tmp to output file\n";
+
