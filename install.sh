@@ -32,4 +32,7 @@ echo "#
 install -m 0755 plugin/mrpe_check_ping /usr/lib/check_mk_agent/plugins/mrpe_check_ping
 
 echo "Finished"
+echo
+echo "Give at least 2 minutes before discovering in Check_MK"
+echo
 
