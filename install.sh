@@ -11,8 +11,14 @@ if [ ! -x /usr/lib/check_mk_agent/plugins ] ; then
 	exit 1
 fi
 
+if [ $(dirname "$0") != "." ] ; then
+	echo "Script must be run from its own directory"
+	exit 1
+fi
+
 echo "Installing"
-cwd=`pwd`
+
+chown -R root:root .
 
 bin_cpt=$(pwd)/bin/check_ping_threaded
 plugin_mcp=$(pwd)/plugin/mrpe_check_ping
