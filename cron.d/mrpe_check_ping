@@ -1,0 +1,4 @@
+# 
+# cron.d/mrpe_check_ping -- schedules threaded check_mk check_ping every minute
+# 
+* *	* * *	root	if [ -x BIN_CPT ]; then BIN_CPT >> /var/log/mrpe_check_ping.log 2>&1; fi
