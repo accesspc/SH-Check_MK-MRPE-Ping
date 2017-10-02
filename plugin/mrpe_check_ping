@@ -2,6 +2,6 @@
 
 if [ -x /tmp/mrpe ] ; then
 	for p in `cat /etc/check_mk/mrpe_check_ping.cfg | awk -- '{print $1}'` ; do
-		cat /tmp/mrpe/${p}.tmp
+		cat /tmp/mrpe/${p}.out
 	done
 fi
