@@ -30,6 +30,13 @@ sed -s -i "s|BIN_CPT|${bin_cpt}|g" /etc/cron.d/mrpe_check_ping
 install -v -m 0644 logrotate.d/mrpe_check_ping /etc/logrotate.d/mrpe_check_ping
 install -v -m 0755 plugin/mrpe_check_ping /usr/lib/check_mk_agent/plugins/mrpe_check_ping
 
+touch /etc/check_mk/mrpe_check_ping.cfg
+
+echo 
+echo "Please update /etc/check_mk/mrpe_check_ping.cfg file with ping services in 'mrpe' syntax, e.g.:"
+echo 'Ping-Google-8.8.8.8   /usr/lib/nagios/plugins/check_ping -H 8.8.8.8 -w200,5% -c 500,20% -p 30'
+echo
+
 echo
 echo "Finished"
 echo
