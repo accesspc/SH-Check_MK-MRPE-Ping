@@ -71,9 +71,9 @@ sub ping_thread {
 		
 		@strs = split /\s+/, $_;
 		$status = 0;
-		if (@strs[1] eq "WARNING") { $status = 1; }
-		elsif (@strs[1] eq "CRITICAL") { $status = 2; }
-		elsif (@strs[1] eq "UNKNOWN") { $status = 3; }
+		if ($strs[1] eq "WARNING") { $status = 1; }
+		elsif ($strs[1] eq "CRITICAL") { $status = 2; }
+		elsif ($strs[1] eq "UNKNOWN") { $status = 3; }
 		
 		print TMP "<<<mrpe>>>\n";
 		print TMP "(check_ping) $name $status $_\n";
