@@ -1,7 +1,7 @@
 #!/bin/bash
 #set -x 
 
-if [ ! -x /usr/lib/nagios/plugins/check_ping ] ; then
+if [ ! -x /usr/lib/nagios/plugins/check_ping || ! -x /usr/lib64/nagios/plugins ] ; then
 	echo "nagios-plugins is not installed"
 	exit 1
 fi
