@@ -5,6 +5,8 @@ if [ ! -x /usr/lib/nagios/plugins/check_ping ] ; then
 	if [ ! -x /usr/lib64/nagios/plugins/check_ping ] ; then
 		echo "nagios-plugins is not installed"
 		exit 1
+	else
+		ln -s /usr/lib64/nagios /usr/lib/nagios
 	fi
 fi
 
