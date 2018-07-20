@@ -50,9 +50,9 @@ while($run) {
 sub ping_thread {
 	# Collect arguments
 	my @data = @_;
-	$ping_command = @data[0];
-	$handle = PING."@data[1]";
-	$name = @data[2];
+	$ping_command = $data[0];
+	$handle = PING."$data[1]";
+	$name = $data[2];
 	
 	# Open temp file for output
 	open(TMP, ">/tmp/mrpe/$name.tmp") or die "Can't open output temp '/tmp/mrpe/$name.tmp' file\n";
